@@ -99,7 +99,8 @@ module DataMapper
     #
     # @api       private
     def self.pick(klass, name)
-      self.record_map[klass][name.to_sym].pick || raise(NoFixtureExist, "no #{name} context fixtures have been generated for the #{klass} class")
+      self.record_map[klass][name.to_sym].select{|r| r.saved?}.pick or
+        raise(NoFixtureExist, "no #{name} context fixtures have been successfully generated for the #{klass} class")
     end
 
     # Returns a Hash of attributes from the model map
